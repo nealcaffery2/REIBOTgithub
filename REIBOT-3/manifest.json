@@ -20,7 +20,7 @@
     "activeTab",
     "storage",
     "https://zillow69.p.rapidapi.com/*",
-    "https://reibot.herokuapp.com/search"
+    "https://reibot-2e6c1bce964a.herokuapp.com/search"
   ],
   "background": {
     "scripts": [
