@@ -4,8 +4,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
         const { city, state } = request;
 
         // Construct the URL for your API endpoint or server function
-        const apiEndpoint = 'http://localhost:5000/search'; // Replace with your actual API endpoint
-
+        const apiEndpoint = 'https://reibot-2e6c1bce964a.herokuapp.com/search';
 
         const payload = { city, state };
 
@@ -34,5 +33,3 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
 
     // Add more message handling as needed
 });
-
-// You can add more background functionalities here, such as listening for specific browser events, etc.

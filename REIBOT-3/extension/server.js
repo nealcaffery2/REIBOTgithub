@@ -25,7 +25,7 @@ app.post('/search', (req, res) => {
     res.json(zillowData);
 });
 
-const PORT = 5000;
+const PORT = process.env.PORT || 5000; // Use the dynamic port provided by Heroku or default to 5000
 app.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}`);
+    console.log(`Server is running on port ${PORT}`);
 });

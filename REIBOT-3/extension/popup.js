@@ -1,13 +1,14 @@
 // popup.js
 document.addEventListener('DOMContentLoaded', function () {
-    const searchForm = document.getElementById('searchForm');  // Ensure this matches your form ID in HTML
+    const apiEndpoint = 'https://nealcaffery2.github.io/REIBOTgithub/server/search';
+    const searchForm = document.getElementById('searchForm');
     const cityInput = document.getElementById('cityInput');
     const stateInput = document.getElementById('stateInput');
     const loadingElement = document.getElementById('loading');
     const resultsElement = document.getElementById('results');
-    const progressBar = document.getElementById('progressBar'); // Ensure this ID is in your HTML
-    const finishedContainer = document.getElementById('finishedContainer'); // Container for finished message and download button
-    const downloadButton = document.getElementById('downloadButton'); // Ensure this ID is in your HTML
+    const progressBar = document.getElementById('progressBar');
+    const finishedContainer = document.getElementById('finishedContainer');
+    const downloadButton = document.getElementById('downloadButton');
 
     searchForm.addEventListener('submit', function (event) {
         event.preventDefault();
@@ -22,22 +23,36 @@ document.addEventListener('DOMContentLoaded', function () {
         const city = cityInput.value;
         const state = stateInput.value;
 
-        // Simulate API call (Replace with your actual API call)
-        chrome.runtime.sendMessage({ type: "SEARCH", city, state }, function (response) {
-            // Hide progress bar
-            progressBar.style.display = 'none';
+        // Make an API call to your GitHub Pages-hosted server
+        fetch(apiEndpoint, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ city, state })
+        })
+            .then(response => response.json())
+            .then(data => {
+                // Hide progress bar
+                progressBar.style.display = 'none';
 
-            if (response && response.success) {
-                // Display results and prepare download link
-                displayResults(response.data);
-                prepareDownload(response.data);
-                finishedContainer.style.display = 'block';
-            } else {
-                // Handle errors
+                if (data && data.success) {
+                    // Display results and prepare download link
+                    displayResults(data.data);
+                    prepareDownload(data.data);
+                    finishedContainer.style.display = 'block';
+                } else {
+                    // Handle errors
+                    resultsElement.textContent = 'Failed to fetch data.';
+                    resultsElement.style.display = 'block';
+                }
+            })
+            .catch(error => {
+                // Handle any errors that occur during the fetch
+                console.error('Error fetching data:', error);
                 resultsElement.textContent = 'Failed to fetch data.';
                 resultsElement.style.display = 'block';
-            }
-        });
+            });
     });
 
     function displayResults(data) {

@@ -1,0 +1,2 @@
+web: node extention/server.js
+web: node extension/background.js
